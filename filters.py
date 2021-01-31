@@ -14,7 +14,6 @@ the supplied `CloseApproach`.
 The `limit` function simply limits the maximum number of values produced by an
 iterator.
 
-You'll edit this file in Tasks 3a and 3c.
 """
 import operator
 import itertools
@@ -71,6 +70,31 @@ fcreate_filters
     def __repr__(self):
         return f"{self.__class__.__name__}(op=operator.{self.op.__name__}, value={self.value})"
 
+class DateFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.time.date()
+
+class DistanceFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        # print(approach.distance)
+        return approach.distance
+
+class VelocityFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.velocity
+
+class DiameterFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.diameter
+
+class HazardousFilter(AttributeFilter):
+    @classmethod
+    def get(cls, approach):
+        return approach.neo.hazardous
 
 def create_filters(date=None, start_date=None, end_date=None,
                    distance_min=None, distance_max=None,
@@ -106,43 +130,9 @@ def create_filters(date=None, start_date=None, end_date=None,
     :param hazardous: Whether the NEO of a matching `CloseApproach` is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-    # TODO: Decide how you will represent your filters.
 
     filter_collection = []
 
-    class DateFilter(AttributeFilter):
-        @classmethod
-        def get(cls, approach):
-            return approach.time.date()
-
-    class DistanceFilter(AttributeFilter):
-        @classmethod
-        def get(cls, approach):
-            # print(approach.distance)
-            return approach.distance
-    
-    class VelocityFilter(AttributeFilter):
-        @classmethod
-        def get(cls, approach):
-            return approach.velocity
-
-    class DiameterFilter(AttributeFilter):
-        @classmethod
-        def get(cls, approach):
-            return approach.neo.diameter
-
-    class HazardousFilter(AttributeFilter):
-        @classmethod
-        def get(cls, approach):
-            return approach.neo.hazardous
-
-    class TEMPexactDiameter(AttributeFilter):
-        @classmethod
-        def get(cls, approach):
-            # print(approach.neo.designation)
-            return approach.neo.designation
-
-    
     if date is not None:
         filter_collection.append(DateFilter(operator.eq, date))
         pass
@@ -185,7 +175,6 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
     """
-    # TODO: Produce at most `n` values from the given iterator.
 
     if n is not None and n != 0:
         iterator = itertools.islice(iterator,n)

@@ -34,7 +34,6 @@ def load_neos(neo_csv_path):
                 neo_collection.append(neo)
 
     return neo_collection
-    # return ()
 
 
 def load_approaches(cad_json_path):
@@ -43,16 +42,14 @@ def load_approaches(cad_json_path):
     :param neo_csv_path: A path to a JSON file containing data about close approaches.
     :return: A collection of `CloseApproach`es.
     """
-    # TODO: Load close approach data from the given JSON file.
-    ca_collection = []
 
+    ca_collection = []
 
     with open(cad_json_path) as infile:
         items = json.load(infile)
         data_ids = items["fields"]
         for data in items["data"]:
-            ca = CloseApproach(designation=data[data_ids.index('des')],time=data[data_ids.index('cd')],distance=data[data_ids.index('dist')],velocity=data[data_ids.index('v_rel')],dist_min=data[data_ids.index('dist_min')],dist_max=data[data_ids.index('dist_max')])
+            ca = CloseApproach(designation=data[data_ids.index('des')],time=data[data_ids.index('cd')],distance=data[data_ids.index('dist')],velocity=data[data_ids.index('v_rel')])
             ca_collection.append(ca)
 
     return ca_collection
-    # return ()
