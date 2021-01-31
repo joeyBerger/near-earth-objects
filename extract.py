@@ -29,8 +29,9 @@ def load_neos(neo_csv_path):
     with open(neo_csv_path) as infile:
         reader = csv.DictReader(infile)
         for item in reader:
-            neo = NearEarthObject(designation=item["pdes"],name=item["name"],diameter=item["diameter"],hazardous=item["pha"])
-            neo_collection.append(neo)
+            if item["neo"] == "Y":
+                neo = NearEarthObject(designation=item["pdes"],name=item["name"],diameter=item["diameter"],hazardous=item["pha"])
+                neo_collection.append(neo)
 
     return neo_collection
     # return ()
