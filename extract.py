@@ -51,7 +51,7 @@ def load_approaches(cad_json_path):
         items = json.load(infile)
         data_ids = items["fields"]
         for data in items["data"]:
-            ca = CloseApproach(designation=data[data_ids.index('des')],time=data[data_ids.index('cd')],distance=data[data_ids.index('dist')],velocity=data[data_ids.index('v_rel')])
+            ca = CloseApproach(designation=data[data_ids.index('des')],time=data[data_ids.index('cd')],distance=data[data_ids.index('dist')],velocity=data[data_ids.index('v_rel')],dist_min=data[data_ids.index('dist_min')],dist_max=data[data_ids.index('dist_max')])
             ca_collection.append(ca)
 
     return ca_collection

@@ -124,6 +124,10 @@ class CloseApproach:
         self.distance = float(info.get('distance', 'nan')) #float(info['distance'])
         self.velocity = float(info['velocity'])
 
+        # self.dist_min = float(info.get('dist_min', 'nan')) #float(info['distance'])
+        # self.dist_max = float(info.get('dist_max', 'nan')) #float(info['distance'])
+
+
         # Create an attribute for the referenced NEO, originally None.
         self.neo = None
 
@@ -165,6 +169,7 @@ class CloseApproach:
         # method for examples of advanced string formatting.
         # return f"A CloseApproach ..."
         return f"On {self.time_str}, '{self.neo.fullname}' approaches Earth {self.distance_string} and a velocity of {self.velocity_string}"
+        # pass
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""

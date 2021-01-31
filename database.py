@@ -52,10 +52,7 @@ class NEODatabase:
         for approach in approaches:
             if approach._designation in self.neo_designation_dict:
                 approach.neo = self.neo_designation_dict[approach._designation]
-                self.neo_designation_dict[approach._designation].approaches.append(approach)
-                
-        print("objs linked\n\n\n\n\n")
-        
+                self.neo_designation_dict[approach._designation].approaches.append(approach)                
 
     def get_neo_by_designation(self, designation):
         """Find and return an NEO by its primary designation.
@@ -106,5 +103,18 @@ class NEODatabase:
         :return: A stream of matching `CloseApproach` objects.
         """
         # TODO: Generate `CloseApproach` objects that match all of the filters.
+
+        i = 0
         for approach in self._approaches:
+            filters_passed = True
+            for filter in filters:
+                if not filter(approach):
+                    filters_passed = False
+                    break
+            if not filters_passed:
+                continue
+            # if i < 3:
+            #     i += 1
+            # else: 
+            #     break
             yield approach
