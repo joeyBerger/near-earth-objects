@@ -52,6 +52,14 @@ class NearEarthObject:
         # Create an empty initial collection of linked approaches.
         self.approaches = []
 
+    def serialize(self,type="csv"):
+        serilizable_dict = {}
+        serilizable_dict["designation"] = self.designation
+        serilizable_dict["name"] = self.name if type == "csv" or self.name != None else ""
+        serilizable_dict["diameter_km"] = self.diameter #if type == "csv" or self.diameter == self.diameter else "NaN"
+        serilizable_dict["potentially_hazardous"] = self.hazardous
+        return serilizable_dict
+
     @property
     def fullname(self):
         """Return a representation of the full name of this NEO."""
@@ -105,6 +113,16 @@ class CloseApproach:
         self.velocity = float(info['velocity'])
         self.neo = None
 
+    def serialize(self,type="csv"):
+        serilizable_dict = {}
+        serilizable_dict["datetime_utc"] = self.time_str
+        serilizable_dict["distance_au"] = self.distance
+        serilizable_dict["velocity_km_s"] = self.velocity
+        if type == "json":
+            serilizable_dict["neo"] = self.neo.serialize(type)
+
+        return serilizable_dict
+
     @property
     def time_str(self):
         """Return a formatted representation of this `CloseApproach`'s approach time.
@@ -128,7 +146,7 @@ class CloseApproach:
     @property
     def velocity_string(self):
         """Return a representation of the velocity of this CloseApproach"""
-        return "" if self.velocity == self.distance_string == "" else f"{self.velocity:.2f} km/s."        
+        return "" if self.velocity == self.distance_string == "" else f"{self.velocity:.2f} km/s."
         
     def __str__(self):
         """Return `str(self description)`."""
