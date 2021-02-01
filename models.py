@@ -38,25 +38,28 @@ class NearEarthObject:
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
-        self.designation = info['designation']
+        self.designation = info["designation"]
 
-        name = info.get('name', None)
-        self.name =  None if name == '' else name
-        
-        diameter = info.get('diameter', 'nan')
-        diameter = float('nan') if diameter == '' else float(diameter)
+        name = info.get("name", None)
+        self.name = None if name == "" else name
+
+        diameter = info.get("diameter", "nan")
+        diameter = float("nan") if diameter == "" else float(diameter)
         self.diameter = diameter
 
-        self.hazardous = True if info.get('hazardous', False) == "Y" else False
+        self.hazardous = True if info.get("hazardous", False) == "Y" else False
 
         # Create an empty initial collection of linked approaches.
         self.approaches = []
 
-    def serialize(self,type="csv"):
+    def serialize(self, type="csv"):
+        """Return a dictionary of needed properties associated with instance"""
         serilizable_dict = {}
         serilizable_dict["designation"] = self.designation
-        serilizable_dict["name"] = self.name if type == "csv" or self.name != None else ""
-        serilizable_dict["diameter_km"] = self.diameter #if type == "csv" or self.diameter == self.diameter else "NaN"
+        serilizable_dict["name"] = (
+            self.name if type == "csv" or self.name != None else ""
+        )
+        serilizable_dict["diameter_km"] = self.diameter
         serilizable_dict["potentially_hazardous"] = self.hazardous
         return serilizable_dict
 
@@ -64,8 +67,8 @@ class NearEarthObject:
     def fullname(self):
         """Return a representation of the full name of this NEO."""
         name = "" if self.name == None else f" ({self.name})"
-        return self.designation + name
-        
+        return (self.designation + name)
+
     @property
     def hazardous_string(self):
         """Return a representation of the hazardous nature of this NEO"""
@@ -75,7 +78,11 @@ class NearEarthObject:
     @property
     def diameter_string(self):
         """Return a representation of the diameter of this NEO"""
-        return_string = "an unknown diameter" if self.diameter == float('nan') else f"a diameter of {self.diameter:.3f} km"
+        return_string = (
+            "an unknown diameter"
+            if self.diameter == float("nan")
+            else f"a diameter of {self.diameter:.3f} km"
+        )
         return return_string
 
     def __str__(self):
@@ -84,8 +91,10 @@ class NearEarthObject:
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
-        return (f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, "
-                f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})")
+        return (
+            f"NearEarthObject(designation={self.designation!r}, name={self.name!r}, "
+            f"diameter={self.diameter:.3f}, hazardous={self.hazardous!r})"
+        )
 
 
 class CloseApproach:
@@ -107,13 +116,14 @@ class CloseApproach:
 
         :param info: A dictionary of excess keyword arguments supplied to the constructor.
         """
-        self._designation = info['designation']
-        self.time = cd_to_datetime(info['time'])
-        self.distance = float(info.get('distance', 'nan'))
-        self.velocity = float(info['velocity'])
+        self._designation = info["designation"]
+        self.time = cd_to_datetime(info["time"])
+        self.distance = float(info.get("distance", "nan"))
+        self.velocity = float(info["velocity"])
         self.neo = None
 
-    def serialize(self,type="csv"):
+    def serialize(self, type="csv"):
+        """Return a dictionary of needed properties associated with instance"""
         serilizable_dict = {}
         serilizable_dict["datetime_utc"] = self.time_str
         serilizable_dict["distance_au"] = self.distance
@@ -141,19 +151,28 @@ class CloseApproach:
     @property
     def distance_string(self):
         """Return a representation of the distance of this CloseApproach"""
-        return "" if self.distance == float('nan') else f"at a distance of {self.distance:.2f} au"
+        return (
+            ""
+            if self.distance == float("nan")
+            else f"at a distance of {self.distance:.2f} au"
+        )
 
     @property
     def velocity_string(self):
         """Return a representation of the velocity of this CloseApproach"""
-        return "" if self.velocity == self.distance_string == "" else f"{self.velocity:.2f} km/s."
-        
+        return (
+            ""
+            if self.velocity == self.distance_string == ""
+            else f"{self.velocity:.2f} km/s."
+        )
+
     def __str__(self):
         """Return `str(self description)`."""
         return f"On {self.time_str}, '{self.neo.fullname}' approaches Earth {self.distance_string} and a velocity of {self.velocity_string}"
 
-
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
-        return (f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
-                f"velocity={self.velocity:.2f}, neo={self.neo!r})")
+        return (
+            f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
+            f"velocity={self.velocity:.2f}, neo={self.neo!r})"
+        )

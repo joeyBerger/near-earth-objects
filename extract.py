@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 """Extract data on near-Earth objects and close approaches from CSV and JSON files.
 
 The `load_neos` function extracts NEO data from a CSV file, formatted as
@@ -12,6 +14,7 @@ line, and uses the resulting collections to build an `NEODatabase`.
 
 You'll edit this file in Task 2.
 """
+
 import csv
 import json
 
@@ -24,13 +27,15 @@ def load_neos(neo_csv_path):
     :param neo_csv_path: A path to a CSV file containing data about near-Earth objects.
     :return: A collection of `NearEarthObject`s.
     """
-    
+
     neo_collection = []
     with open(neo_csv_path) as infile:
         reader = csv.DictReader(infile)
         for item in reader:
-            if item["neo"] == "Y":
-                neo = NearEarthObject(designation=item["pdes"],name=item["name"],diameter=item["diameter"],hazardous=item["pha"])
+            if item['neo'] == 'Y':
+                neo = NearEarthObject(designation=item['pdes'],
+                        name=item['name'], diameter=item['diameter'],
+                        hazardous=item['pha'])
                 neo_collection.append(neo)
 
     return neo_collection
@@ -47,9 +52,12 @@ def load_approaches(cad_json_path):
 
     with open(cad_json_path) as infile:
         items = json.load(infile)
-        data_ids = items["fields"]
-        for data in items["data"]:
-            ca = CloseApproach(designation=data[data_ids.index('des')],time=data[data_ids.index('cd')],distance=data[data_ids.index('dist')],velocity=data[data_ids.index('v_rel')])
+        data_ids = items['fields']
+        for data in items['data']:
+            ca = CloseApproach(designation=data[data_ids.index('des')],
+                               time=data[data_ids.index('cd')],
+                               distance=data[data_ids.index('dist')],
+                               velocity=data[data_ids.index('v_rel')])
             ca_collection.append(ca)
 
     return ca_collection
